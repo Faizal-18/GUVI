@@ -1,32 +1,32 @@
 <?php
-// MySQL Connection
+// ---------- MYSQL ----------
 $mysqli = new mysqli("localhost", "root", "", "demo_app");
-
 if ($mysqli->connect_errno) {
     echo json_encode(["success" => false, "message" => "Database connection failed"]);
     exit;
 }
 $mysqli->set_charset("utf8mb4");
 
+// ---------- HEADERS ----------
 header("Content-Type: application/json");
 
-// Composer Autoload (for Predis + MongoDB)
+// ---------- COMPOSER AUTOLOAD ----------
 require_once __DIR__ . "/vendor/autoload.php";
 
-// Redis (Predis)
+// ---------- REDIS ----------
 use Predis\Client as RedisClient;
+
 $redis = new RedisClient([
-    'scheme' => 'tcp',
-    'host' => '127.0.0.1',
-    'port' => 6379
+    "scheme" => "tcp",
+    "host" => "127.0.0.1",
+    "port" => 6379
 ]);
 
-// MongoDB
-//$mongo = (new MongoDB\Client)->demo_app;
-//$logs = $mongo->user_logs;
+// ---------- MONGODB ----------
+$mongo = (new MongoDB\Client)->demo_app;
+$profileCollection = $mongo->user_profiles;
 
 function respond($data) {
     echo json_encode($data);
     exit;
 }
-?>
